@@ -15,17 +15,25 @@ class TimRestAPI extends TimRestInterface
 	protected $contenttype = 'json';
 	protected $apn = '0';
 
+    /**
+     * 是否开启调试模式
+     * @var bool
+     */
+    protected $debug = true;
+
 	
 	/**
 	 * 初始化函数
 	 * @param int $sdkappid 应用的appid
 	 * @param string $identifier 访问接口的用户
+     * @param bool $debug 是否开启调试模式（默认不开启）
 	 */
-	function init($sdkappid, $identifier)
+	function init($sdkappid, $identifier, $debug = false)
 	{
 	
 		$this->sdkappid = $sdkappid;
 		$this->identifier = $identifier;
+        $this->debug = $debug;
 	}
 
 	/** 
@@ -48,8 +56,11 @@ class TimRestAPI extends TimRestInterface
             . "&sdkappid=" . $this->sdkappid
             . "&contenttype=" . $this->contenttype;
 		$url = $this->http_type . $this->im_yun_url . '/' . $this->version . '/' . $service_name . '/' .$cmd_name . '?' . $parameter;
-		
-		if($print_flag)
+
+        /**
+         * 如果开启了调试模式，打印请求和响应的相应信息
+         */
+		if($this->debug)
 		{
 			echo "Request Url:\n";
 			echo $url;
